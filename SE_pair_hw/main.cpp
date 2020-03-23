@@ -9,8 +9,8 @@
 #pragma comment(lib,"core.lib")
 
 int main(int argc, const char* argv[]) {
-    ifstream fin("input.txt", ios::in);
-    ofstream fout("output.txt", ios::out);
+    ifstream fin(argv[2], ios::in);
+    ofstream fout(argv[4], ios::out);
     string input_num;
     getline(fin, input_num);
     try {
@@ -19,7 +19,7 @@ int main(int argc, const char* argv[]) {
         }
     }
     catch (WrongFirstLineFormatException e) {
-        fout << e.what() << endl;
+        cout << e.what() << endl;
         exit(-1);
     }
     int num = stoi(input_num);
@@ -29,13 +29,13 @@ int main(int argc, const char* argv[]) {
         getline(fin, input_shape);
         try {
             if (!regex_match(input_shape, regex("\\s*[LRS]\\s*(-?[0-9]\\d*\\s*){4}"))) {
-                if (!regex_match(input_shape, regex("\\s*C\\s*(-?[0-9]\\d*\\s*){3}"))) {
+                if (!regex_match(input_shape, regex("\\s*C\\s*(-?[0-9]\\d*\\s*){2}[0-9]\\d*\\s*"))) {
                     throw WrongOtherLineFormatException();
                 }
             }
         }
         catch (WrongOtherLineFormatException e) {
-            fout << e.what() << endl;
+            cout << e.what() << endl;
             exit(-1);
         }
         input_shape = trim(input_shape);
@@ -74,8 +74,7 @@ int main(int argc, const char* argv[]) {
     }
 
     fout << sol->getSolve() << endl;
-
-    //fin.close();
-    //fout.close();
+    fin.close();
+    fout.close();
     return 0;
 }
